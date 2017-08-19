@@ -4,7 +4,7 @@
     
     <entry>
       <title><![CDATA[Hello World]]></title>
-      <url>/2017/08/18/hello-world/</url>
+      <url>/2017/08/19/hello-world/</url>
       <content type="html"><![CDATA[<p>Impressive! Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
@@ -25,9 +25,30 @@
         
         <tags>
             
-            <tag> 日常 </tag>
-            
             <tag> 笔记 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[寂寞天柱山]]></title>
+      <url>/2017/08/19/%E5%AF%82%E5%AF%9E%E5%A4%A9%E6%9F%B1%E5%B1%B1/</url>
+      <content type="html"><![CDATA[<p>  现在有很多文化人完全不知道天柱山的存在，这实在是不应该的。<br>  青山抵在古城隅，万里归来卜筑居。<br>  《怀舒州山水》</p>
+<h2 id="野性堪如此"><a href="#野性堪如此" class="headerlink" title="野性堪如此"></a>野性堪如此</h2><p>  王安石一生经历的政治风浪多，社会地位高，但他总觉得平生有许多事情没有多大意思。</p>
+<h2 id="潜山归去来"><a href="#潜山归去来" class="headerlink" title="潜山归去来"></a>潜山归去来</h2><p>黄庭坚在天柱山居住过一段时间以后，总是口口声声”吾家潜山，实为名山之福地“。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 读书 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 读书摘录 </tag>
             
         </tags>
         
@@ -38,8 +59,7 @@
       <url>/2017/08/18/%E6%AF%95%E4%B8%9A%E6%95%A3%E8%AE%B0/</url>
       <content type="html"><![CDATA[<p>Deploy my blog on GitHub Pages. </p>
 <p>Hey, all.</p>
-<p>##风不定 人初静</p>
-<p>###重重暮映<br>逝者如斯，不舍昼夜。转眼已经到了读硕士的年龄。生命中的一切都仿佛在按照人生的剧本铺陈、上演，而在观众们看到的波澜不惊背后，往往隐藏着躁动不安的、成长的情绪。</p>
+<h2 id="风不定-人初静"><a href="#风不定-人初静" class="headerlink" title="风不定 人初静"></a>风不定 人初静</h2><h3 id="重重暮映"><a href="#重重暮映" class="headerlink" title="重重暮映"></a>重重暮映</h3><p>逝者如斯，不舍昼夜。转眼已经到了读硕士的年龄。生命中的一切都仿佛在按照人生的剧本铺陈、上演，而在观众们看到的波澜不惊背后，往往隐藏着躁动不安的、成长的情绪。</p>
 <p>对待生活理想，应该像宗教徒对待宗教一样充满虔诚与热情！</p>
 ]]></content>
       
@@ -53,6 +73,8 @@
         <tags>
             
             <tag> 日常 </tag>
+            
+            <tag> 总结 </tag>
             
         </tags>
         
