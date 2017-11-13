@@ -171,6 +171,12 @@
   
     
     <entry>
+      <title><![CDATA[读书]]></title>
+      <url>/reading/index.html</url>
+      <content type="html"></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[关于]]></title>
       <url>/about/index.html</url>
       <content type="html"><![CDATA[<p>Hello, everybody! Welcome to my personal blog site. I graduated from Huazhong University of Science and Technology(HUST) and I’m a graduate student at CSE(Computer Science and Engineering) department of SJTU. I’m currently working on data science.</p>
@@ -181,12 +187,6 @@
 </ul>
 <p>:)</p>
 ]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[读书]]></title>
-      <url>/reading/index.html</url>
-      <content type="html"></content>
     </entry>
     
   
