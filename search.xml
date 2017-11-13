@@ -3,11 +3,35 @@
   
     
     <entry>
-      <title><![CDATA[写在开学季]]></title>
-      <url>/2017/09/13/%E5%86%99%E5%9C%A8%E5%BC%80%E5%AD%A6%E5%AD%A3/</url>
-      <content type="html"><![CDATA[<p>开学的第三天，上了两天课，开了组会和班会，逛了校园。现在的心情，与本科开学的兴奋是截然不同的。或许是因为我虽然是交大的新生，但是已经在这里呆了好几个月的时间，所以没有新鲜感了？应该不是吧。</p>
-<p>The size of data sets being collected and analyzed in the industry for business intelligence is growing rapidly, making traditional warehousing solutions prohibitively expensive. Hadoop is a popular open-source map-reduce implementation which is being used as an alternative to store and process extemely large data sets on commodity hardware. However, the map-reduce programming model is very low level and requires developers to write custom programs which are hard to maintain and reuse.</p>
-<p>In this paper, we present Hive, an open-source data warehousing solution built on top of Hadoop. Hive supports queries expressed in a SQL-like declarative language - HiveQL, which are compiled into map-reduce jobs executed on Hadoop.</p>
+      <title><![CDATA[LevelDB]]></title>
+      <url>/2017/11/02/LevelDB/</url>
+      <content type="html"><![CDATA[<p>开学以来想找个优秀的C++开源项目学习一下，在实验室学长的建议下选择了Google的开源项目LevelDB。</p>
+<h4 id="Overall"><a href="#Overall" class="headerlink" title="Overall"></a>Overall</h4><p>Google发表在OSDI上的Bigtable是一个支持海量数据存储的分布式存储系统。</p>
+<h4 id="Modules"><a href="#Modules" class="headerlink" title="Modules"></a>Modules</h4><h5 id="Memory-Area"><a href="#Memory-Area" class="headerlink" title="Memory Area"></a>Memory Area</h5><h5 id="Compaction"><a href="#Compaction" class="headerlink" title="Compaction"></a>Compaction</h5><h5 id="Metatable"><a href="#Metatable" class="headerlink" title="Metatable"></a>Metatable</h5>]]></content>
+      
+        <categories>
+            
+            <category> 技术 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> C++ </tag>
+            
+            <tag> Google </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[2017开学季]]></title>
+      <url>/2017/10/02/2017%E5%BC%80%E5%AD%A6%E5%AD%A3/</url>
+      <content type="html"><![CDATA[<p>题目是说开学季，然而现在已经是国庆节假期了2333，可能是回家了没什么事情做，就动手写写开学将近一个月来的感受吧。</p>
+<p>虽然中学、大学本科一路走来，已经是做学生的老司机了，但是还是觉得有一点点迷茫或者不那么适应的感觉。</p>
+<h3 id="关于学习"><a href="#关于学习" class="headerlink" title="关于学习"></a>关于学习</h3><p>女朋友26号已经去了英国，还以一种不那么自然的方式第一次见了女朋友的父母。。觉得很神奇哈哈哈哈。</p>
 ]]></content>
       
         <categories>
@@ -19,9 +43,7 @@
         
         <tags>
             
-            <tag> 日常 </tag>
-            
-            <tag> 感悟 </tag>
+            <tag> graduate </tag>
             
         </tags>
         
@@ -123,31 +145,23 @@
     </entry>
     
     <entry>
-      <title><![CDATA[Hello World]]></title>
-      <url>/2016/12/14/hello-world/</url>
-      <content type="html"><![CDATA[<p>Impressive! Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+      <title><![CDATA[谈谈人生]]></title>
+      <url>/2016/12/14/%E8%B0%88%E8%B0%88%E4%BA%BA%E7%94%9F/</url>
+      <content type="html"><![CDATA[<p>首先，不好意思，我是个标题党。</p>
+<p>无论如何，不管从人生阅历或是年龄来说，“谈人生”，我都是不够格的。可是，毕竟也都快到法定结婚年龄了（摊手.gif），有三言两语想写出来，就当是作为“成熟路上”的记录吧哈哈哈。</p>
+<p>以下内容自动隐藏…</p>
 ]]></content>
       
         <categories>
             
-            <category> 技术 </category>
-            
-            <category> others </category>
+            <category> 日常 </category>
             
         </categories>
         
         
         <tags>
             
-            <tag> 笔记 </tag>
+            <tag> daily life </tag>
             
         </tags>
         
