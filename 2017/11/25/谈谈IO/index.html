@@ -7,13 +7,17 @@
 
     
 
-    <title>Archives: 2016/12 | </title>
+    <title>谈谈IO | </title>
     <meta name="author" content="Jerry Fang">
+    
+    <meta name="description" content="Preface最近感觉虽然挺忙的，但是也是在瞎忙。然后深刻觉得，没有一个明确方向地忙，其实是很可怕的 =_= 
+Anyway，继续努力，继续增加自己的信心吧。 
+MainOverallLinux下的IO总体分为磁盘IO与网络IO。磁盘IO的对象是磁盘上的文件，网络IO的对象是Socket套接字及其缓">
     
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    
+    <meta property="og:title" content="谈谈IO"/>
     <meta property="og:site_name" content="Jerry FANG&#39;s World"/>
 
     
@@ -215,40 +219,92 @@
 
     <main>
         <div class="container main-container">
-    
-
-<nav class="page-nav hide-on-small-only">
+    <nav class="page-nav hide-on-small-only">
     <div class="nav-wrapper indigo">
-        <span class="breadcrumb">Current page(Archives)</span>
+        <span class="breadcrumb">Current page(Categories)</span>
+        
+            
+    
+    
+    <a class="breadcrumb" href="/categories/技术/">技术</a>
+
+
         
 
         
     </div>
 </nav>
 
+<article>
+    <div class="card">
+        <div class="card-content">
+            
+
+            <div class="article-title">
+                
+    
+        <h1>谈谈IO</h1>
+    
 
 
-    <ul class="collapsible mt-0" data-collapsible="accordion">
+            </div>
+            <time class="green-link-context" datetime="2017-11-25T12:20:20.000Z"><a href="/2017/11/25/谈谈IO/">2017-11-25</a></time>
+
+            <span id="busuanzi_container_page_pv" class="read-times-container">
+    <i class="fa fa-eye"></i>
+    <span id="busuanzi_value_page_pv"></span>
+</span>
+
+            
+    <div class="tags-row">
         
+            <a href="/tags/Linux/" class="chip green lighten-1">Linux</a>
         
-            <li>
-                <div class="collapsible-header active">
-                    <i class="fa fa-archive"></i>2016
-                </div>
-                <div class="collapsible-body">
-                    <div class="collection">
-                        
-                            <a href="/2016/12/14/谈谈人生/" class="collection-item grey-text text-darken-1">
-                                <time datetime="2016-12-14T12:52:14.000Z">2016-12-14</time>
-                                <span>&nbsp;&nbsp;&nbsp;</span>
-                                谈谈人生
-                            </a>
-                        
-                    </div>
-                </div>
-            </li>
+            <a href="/tags/UNP/" class="chip green lighten-1">UNP</a>
         
-    </ul>
+    </div>
+
+
+            <div class="toc green-link-context hide-on-med-and-down">
+    <ol class="section table-of-contents"><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#Preface"><span class="section table-of-contents-text">Preface</span></a></li><li class="section table-of-contents-item section table-of-contents-level-2"><a class="section table-of-contents-link" href="#Main"><span class="section table-of-contents-text">Main</span></a><ol class="section table-of-contents-child"><li class="section table-of-contents-item section table-of-contents-level-4"><a class="section table-of-contents-link" href="#Overall"><span class="section table-of-contents-text">Overall</span></a></li></ol></li><li class="section table-of-contents-item section table-of-contents-level-3"><a class="section table-of-contents-link" href="#阻塞IO与非阻塞IO的区别"><span class="section table-of-contents-text">阻塞IO与非阻塞IO的区别</span></a></li></ol></li></ol>
+</div>
+
+
+            <div class="entry green-link-context">
+                <h2 id="Preface"><a href="#Preface" class="headerlink" title="Preface"></a>Preface</h2><p>最近感觉虽然挺忙的，但是也是在瞎忙。然后深刻觉得，没有一个明确方向地忙，其实是很可怕的 =_= </p>
+<p>Anyway，继续努力，继续增加自己的信心吧。 </p>
+<h2 id="Main"><a href="#Main" class="headerlink" title="Main"></a>Main</h2><h4 id="Overall"><a href="#Overall" class="headerlink" title="Overall"></a>Overall</h4><p>Linux下的IO总体分为磁盘IO与网络IO。磁盘IO的对象是磁盘上的文件，网络IO的对象是Socket套接字及其缓冲区。Linux下的IO类型分为5类：</p>
+<ul>
+<li>阻塞(Block)IO</li>
+<li>非阻塞(Nonblock)IO</li>
+<li>IO多路复用(Multiplexing)，或者说事件驱动的IO</li>
+<li>信号驱动的IO</li>
+<li>异步IO</li>
+</ul>
+<p>同时需要强调的是，前四种从本质上来说都是同步IO。</p>
+<h3 id="阻塞IO与非阻塞IO的区别"><a href="#阻塞IO与非阻塞IO的区别" class="headerlink" title="阻塞IO与非阻塞IO的区别"></a>阻塞IO与非阻塞IO的区别</h3><p>阻塞IO的模型如下图所示。</p>
+<p><img src="http://oux7mu760.bkt.clouddn.com/142330286789443.png" alt=""></p>
+<p>以recv进程为例，进程在内核准备数据的过程中是阻塞的，即被挂起等待数据。当数据准备好，内核把数据拷贝到用户空间，返回给用户处理。</p>
+
+                
+
+
+<p class="green-link-context">
+    <a href="/2017/11/02/LevelDB/" rel="next" title="LevelDB">
+    Next: LevelDB
+  </a>
+</p>
+
+
+            </div>
+			
+        </div>
+    </div>
+</article>
+
+
+
+
 
 
 </div>

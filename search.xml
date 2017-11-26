@@ -3,6 +3,42 @@
   
     
     <entry>
+      <title><![CDATA[谈谈IO]]></title>
+      <url>/2017/11/25/%E8%B0%88%E8%B0%88IO/</url>
+      <content type="html"><![CDATA[<h2 id="Preface"><a href="#Preface" class="headerlink" title="Preface"></a>Preface</h2><p>最近感觉虽然挺忙的，但是也是在瞎忙。然后深刻觉得，没有一个明确方向地忙，其实是很可怕的 =_= </p>
+<p>Anyway，继续努力，继续增加自己的信心吧。 </p>
+<h2 id="Main"><a href="#Main" class="headerlink" title="Main"></a>Main</h2><h4 id="Overall"><a href="#Overall" class="headerlink" title="Overall"></a>Overall</h4><p>Linux下的IO总体分为磁盘IO与网络IO。磁盘IO的对象是磁盘上的文件，网络IO的对象是Socket套接字及其缓冲区。Linux下的IO类型分为5类：</p>
+<ul>
+<li>阻塞(Block)IO</li>
+<li>非阻塞(Nonblock)IO</li>
+<li>IO多路复用(Multiplexing)，或者说事件驱动的IO</li>
+<li>信号驱动的IO</li>
+<li>异步IO</li>
+</ul>
+<p>同时需要强调的是，前四种从本质上来说都是同步IO。</p>
+<h3 id="阻塞IO与非阻塞IO的区别"><a href="#阻塞IO与非阻塞IO的区别" class="headerlink" title="阻塞IO与非阻塞IO的区别"></a>阻塞IO与非阻塞IO的区别</h3><p>阻塞IO的模型如下图所示。</p>
+<p><img src="http://oux7mu760.bkt.clouddn.com/142330286789443.png" alt=""></p>
+<p>以recv进程为例，进程在内核准备数据的过程中是阻塞的，即被挂起等待数据。当数据准备好，内核把数据拷贝到用户空间，返回给用户处理。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 技术 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+            <tag> UNP </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[LevelDB]]></title>
       <url>/2017/11/02/LevelDB/</url>
       <content type="html"><![CDATA[<p>开学以来想找个优秀的C++开源项目学习一下，在实验室学长的建议下选择了Google的开源项目LevelDB。</p>
