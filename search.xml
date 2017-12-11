@@ -4,7 +4,7 @@
     
     <entry>
       <title><![CDATA[谈谈IO]]></title>
-      <url>/2017/11/25/%E8%B0%88%E8%B0%88IO/</url>
+      <url>/blog/2017/11/25/%E8%B0%88%E8%B0%88IO/</url>
       <content type="html"><![CDATA[<h2 id="Preface"><a href="#Preface" class="headerlink" title="Preface"></a>Preface</h2><p>最近感觉虽然挺忙的，但是也是在瞎忙。然后深刻觉得，没有一个明确方向地忙，其实是很可怕的 =_= </p>
 <p>Anyway，继续努力，继续增加自己的信心吧。 </p>
 <h2 id="Main"><a href="#Main" class="headerlink" title="Main"></a>Main</h2><h4 id="Overall"><a href="#Overall" class="headerlink" title="Overall"></a>Overall</h4><p>Linux下的IO总体分为磁盘IO与网络IO。磁盘IO的对象是磁盘上的文件，网络IO的对象是Socket套接字及其缓冲区。Linux下的IO类型分为5类：</p>
@@ -40,7 +40,7 @@
     
     <entry>
       <title><![CDATA[2017散记]]></title>
-      <url>/2017/11/18/2017%E6%95%A3%E8%AE%B0/</url>
+      <url>/blog/2017/11/18/2017%E6%95%A3%E8%AE%B0/</url>
       <content type="html"><![CDATA[<p>本来是想写一篇《毕业散记》的，后来写了一点发现可能是自己的大学几年过得并没有什么特别出彩的点（心酸==），写出来也像是流水账，于是作罢。</p>
 <p>但是2017年对我来说是很特别的，因为是本科毕业和研究生入学的年份，也是和女朋友异国开始的年份。从今年开始，终于长期base上海了，也算是弥补了高考时家人心中的遗憾。</p>
 <p><strong>“对待生活理想，应该像宗教徒对待宗教一样充满虔诚与热情！” </strong></p>
@@ -66,7 +66,7 @@
     
     <entry>
       <title><![CDATA[LevelDB]]></title>
-      <url>/2017/11/02/LevelDB/</url>
+      <url>/blog/2017/11/02/LevelDB/</url>
       <content type="html"><![CDATA[<p>开学以来想找个优秀的C++开源项目学习一下，在实验室学长的建议下选择了Google的开源项目LevelDB。</p>
 <h4 id="Overall"><a href="#Overall" class="headerlink" title="Overall"></a>Overall</h4><p>Google发表在OSDI上的Bigtable是一个支持海量数据存储的分布式存储系统。</p>
 <h4 id="Modules"><a href="#Modules" class="headerlink" title="Modules"></a>Modules</h4><h5 id="Memory-Area"><a href="#Memory-Area" class="headerlink" title="Memory Area"></a>Memory Area</h5><h5 id="Compaction"><a href="#Compaction" class="headerlink" title="Compaction"></a>Compaction</h5><h5 id="Metatable"><a href="#Metatable" class="headerlink" title="Metatable"></a>Metatable</h5>]]></content>
@@ -90,7 +90,7 @@
     
     <entry>
       <title><![CDATA[寂寞天柱山]]></title>
-      <url>/2017/08/19/%E5%AF%82%E5%AF%9E%E5%A4%A9%E6%9F%B1%E5%B1%B1/</url>
+      <url>/blog/2017/08/19/%E5%AF%82%E5%AF%9E%E5%A4%A9%E6%9F%B1%E5%B1%B1/</url>
       <content type="html"><![CDATA[<p>现在有很多文化人完全不知道天柱山的存在，这实在是不应该的。</p>
 <p>我曾惊奇地发现，中国古代许多大文豪、大诗人都曾希望在天柱山（潜山）安家。他们走过的地方很多，面对着佳山佳水一时激动，说一些过头话是不奇怪的；但是，声言一定要在某地安家，声言非要在那里安度晚年不可，而且身处不同的时代竟不谋而合地如此声言，这无论如何是罕见的。</p>
 <p>唐天宝七年，诗人李白只是在江上路过时远远地看了看天柱山，便立即把它选为自己的归宿地：“待吾还丹成，投迹归此地。”过了些年，安禄山叛乱，唐玄宗携杨贵妃出逃蜀中，《长恨歌》《长生殿》所描写过的生生死死大事件发生在历史舞台上，那个时候李白到哪里去了呢？原来他正躲在天柱山静静地读书。唐代正在漫漫艳情和浩浩狼烟间作艰难的选择，我们的诗人却选择了天柱山。当然，李白并没有炼成丹，最终也没有“投迹归此地”，但历史还是把他的这个真诚愿望留下了。</p>
@@ -157,7 +157,7 @@
     
     <entry>
       <title><![CDATA[谈谈人生]]></title>
-      <url>/2016/12/14/%E8%B0%88%E8%B0%88%E4%BA%BA%E7%94%9F/</url>
+      <url>/blog/2016/12/14/%E8%B0%88%E8%B0%88%E4%BA%BA%E7%94%9F/</url>
       <content type="html"><![CDATA[<p>首先，不好意思，我是个标题党。</p>
 <p>无论如何，不管从人生阅历或是年龄来说，“谈人生”，我都是不够格的。可是，毕竟也都快到法定结婚年龄了（摊手.gif），有三言两语想写出来，就当是作为“成熟路上”的记录吧哈哈哈。</p>
 <p>以下内容自动隐藏…</p>
@@ -183,13 +183,13 @@
     
     <entry>
       <title><![CDATA[读书]]></title>
-      <url>/reading/index.html</url>
+      <url>/blog/reading/index.html</url>
       <content type="html"></content>
     </entry>
     
     <entry>
       <title><![CDATA[关于]]></title>
-      <url>/about/index.html</url>
+      <url>/blog/about/index.html</url>
       <content type="html"><![CDATA[<p>Hello, guys! Welcome to my personal blog site. I got my bachelor’s degree from Huazhong University of Science and Technology(HUST). I’m currently working on network traffic data based projects as  a graduate student at CSE(Computer Science and Engineering) department of SJTU.</p>
 <p>Education experience: </p>
 <ul>
