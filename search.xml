@@ -32,21 +32,24 @@
     <entry>
       <title><![CDATA[I/O Multiplexing]]></title>
       <url>/blog/2017/11/25/%E8%B0%88%E8%B0%88IO/</url>
-      <content type="html"><![CDATA[<h2 id="Preface"><a href="#Preface" class="headerlink" title="Preface"></a>Preface</h2><p>最近感觉虽然挺忙的，但是也是在瞎忙。然后深刻觉得，没有一个明确方向地忙，其实是很可怕的 =_= </p>
-<p>Anyway，继续努力，继续增加自己的信心吧。 </p>
-<h2 id="Main"><a href="#Main" class="headerlink" title="Main"></a>Main</h2><h4 id="Overall"><a href="#Overall" class="headerlink" title="Overall"></a>Overall</h4><p>Linux下的IO总体分为磁盘IO与网络IO。磁盘IO的对象是磁盘上的文件，网络IO的对象是Socket套接字及其缓冲区。Linux下的IO类型分为5类：</p>
+      <content type="html"><![CDATA[<p><em>TODO</em> Epoll; Reactor model.</p>
+<h2 id="Preface"><a href="#Preface" class="headerlink" title="Preface"></a>Preface</h2><p>有些进程需要一种预先告知内核的能力，使得内核一旦发现进程指定的一个或多个I/O条件就绪(也就是说输入已准备好被读取，或者描述符已能承受更多的输出)就通知进程，这个能力成为I/O复用(I/O Multiplexing)。</p>
+<h2 id="Main"><a href="#Main" class="headerlink" title="Main"></a>Main</h2><h4 id="I-O类型"><a href="#I-O类型" class="headerlink" title="I/O类型"></a>I/O类型</h4><p>Linux下的IO总体分为磁盘IO与网络IO。磁盘IO的对象是磁盘上的文件，网络IO的对象是Socket套接字及其缓冲区。Linux下的IO类型分为5类：</p>
 <ul>
-<li>阻塞(Block)IO</li>
-<li>非阻塞(Nonblock)IO</li>
-<li>IO多路复用(Multiplexing)，或者说事件驱动的IO</li>
+<li>阻塞(Blocking)IO</li>
+<li>非阻塞(Non-blocking)IO</li>
+<li>IO多路复用(Multiplexing)</li>
 <li>信号驱动的IO</li>
 <li>异步IO</li>
 </ul>
 <p>同时需要强调的是，前四种从本质上来说都是同步IO。</p>
-<h3 id="阻塞IO与非阻塞IO的区别"><a href="#阻塞IO与非阻塞IO的区别" class="headerlink" title="阻塞IO与非阻塞IO的区别"></a>阻塞IO与非阻塞IO的区别</h3><p>阻塞IO的模型如下图所示。</p>
-<p><img src="http://oux7mu760.bkt.clouddn.com/142330286789443.png" alt=""></p>
-<p>以recv进程为例，进程在内核准备数据的过程中是阻塞的，即被挂起等待数据。当数据准备好，内核把数据拷贝到用户空间，返回给用户处理。</p>
-<p>言归正传，I/O复用的出现</p>
+<h3 id="阻塞IO与非阻塞IO的区别"><a href="#阻塞IO与非阻塞IO的区别" class="headerlink" title="阻塞IO与非阻塞IO的区别"></a>阻塞IO与非阻塞IO的区别</h3><p>阻塞IO，以recv进程为例，进程在内核准备数据的过程中是阻塞的，即被挂起等待数据。当数据准备好，内核把数据拷贝到用户空间，返回给用户处理。</p>
+<p>非阻塞IO，进程把一个套接字设置成非阻塞是在通知内核：当所请求的I/O操作非得把本进程投入睡眠才能完成，不能把本进程投入睡眠，而是返回一个错误。</p>
+<p>当一个应用程序使用了非阻塞模式的套接字，它需要使用一个循环来不听的测试是否一个文件描述符有数据可读（ polling） 。应用程序不停的 polling内核来检查是否 I/O操作已经就绪。这将是一个极浪费CPU资源的操作。这种模式在使用中不是很普遍。</p>
+<h3 id="I-O-Multiplexing"><a href="#I-O-Multiplexing" class="headerlink" title="I/O Multiplexing"></a>I/O Multiplexing</h3><p>有了I/O复用，我们就可以调用select或poll，阻塞在这两个系统调用中的某一个之上，而不是阻塞真正的I/O系统之上，如图所示。</p>
+<p><img src="http://oux7mu760.bkt.clouddn.com/IO_Multiplexing.jpg" alt=""></p>
+<p>进程阻塞于select调用，等待数据报套接字变为可读，当select返回套接字可读这一条件时，调用recvfrom把所读的数据复制到应用程序缓冲区内。另外使用select的优势在于我们可以等待多个描述符就绪。</p>
+<p>一个使用poll的TCP服务器示例程序。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span>     <span class="meta-string">"unp.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span>     <span class="meta-string">&lt;limits.h&gt;         /* for OPEN_MAX */</span></span></div><div class="line"></div><div class="line"><span class="keyword">int</span></div><div class="line">main(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span>     i, maxi, listenfd, connfd, sockfd;</div><div class="line">    <span class="keyword">int</span>     nready;</div><div class="line">    <span class="keyword">ssize_t</span> n;</div><div class="line">    <span class="keyword">char</span>    buf[MAXLINE];</div><div class="line">    <span class="keyword">socklen_t</span> clilen;</div><div class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">pollfd</span> <span class="title">client</span>[<span class="title">OPEN_MAX</span>];</span></div><div class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">cliaddr</span>, <span class="title">servaddr</span>;</span></div><div class="line"></div><div class="line">    listenfd = Socket(AF_INET, SOCK_STREAM, <span class="number">0</span>);</div><div class="line"></div><div class="line">    bzero(&amp;servaddr, <span class="keyword">sizeof</span>(servaddr));</div><div class="line">    servaddr.sin_family = AF_INET;</div><div class="line">    servaddr.sin_addr.s_addr = htonl(INADDR_ANY);</div><div class="line">    servaddr.sin_port = htons(SERV_PORT);</div><div class="line"></div><div class="line">    Bind(listenfd, (SA *) &amp;servaddr, <span class="keyword">sizeof</span>(servaddr));</div><div class="line"></div><div class="line">    Listen(listenfd, LISTENQ);</div><div class="line"></div><div class="line">    client[<span class="number">0</span>].fd = listenfd;</div><div class="line">    client[<span class="number">0</span>].events = POLLRDNORM;</div><div class="line">    <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt; OPEN_MAX; i++)</div><div class="line">        client[i].fd = <span class="number">-1</span>;      <span class="comment">/* -1 indicates available entry */</span></div><div class="line">    maxi = <span class="number">0</span>;                   <span class="comment">/* max index into client[] array */</span></div><div class="line"></div><div class="line">    <span class="keyword">for</span> ( ; ; ) &#123;</div><div class="line">        nready = Poll(client, maxi + <span class="number">1</span>, INFTIM);</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (client[<span class="number">0</span>].revents &amp; POLLRDNORM) &#123;  <span class="comment">/* new client connection */</span></div><div class="line">            clilen = <span class="keyword">sizeof</span>(cliaddr);</div><div class="line">            connfd = Accept(listenfd, (SA *) &amp;cliaddr, &amp;clilen);</div><div class="line"></div><div class="line">            <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt; OPEN_MAX; i++)</div><div class="line">                <span class="keyword">if</span> (client[i].fd &lt; <span class="number">0</span>) &#123;</div><div class="line">                    client[i].fd = connfd;  <span class="comment">/* save descriptor */</span></div><div class="line">                    <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">            <span class="keyword">if</span> (i == OPEN_MAX)</div><div class="line">                err_quit(<span class="string">"too many clients"</span>);</div><div class="line">            client[i].events = POLLRDNORM;</div><div class="line">            <span class="keyword">if</span> (i &gt; maxi)</div><div class="line">                maxi = i;       <span class="comment">/* max index in client[] array */</span></div><div class="line"></div><div class="line">            <span class="keyword">if</span> (--nready &lt;= <span class="number">0</span>)</div><div class="line">                <span class="keyword">continue</span>;       <span class="comment">/* no more readable descriptors */</span></div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt;= maxi; i++) &#123;       <span class="comment">/* check all clients for data */</span></div><div class="line">            <span class="keyword">if</span> ( (sockfd = client[i].fd) &lt; <span class="number">0</span>)</div><div class="line">                <span class="keyword">continue</span>;</div><div class="line">            <span class="keyword">if</span> (client[i].revents &amp; (POLLRDNORM | POLLERR)) &#123;</div><div class="line">                <span class="keyword">if</span> ( (n = read(sockfd, buf, MAXLINE)) &lt; <span class="number">0</span>) &#123;</div><div class="line">                    <span class="keyword">if</span> (errno == ECONNRESET) &#123;</div><div class="line">                            <span class="comment">/* connection reset by client */</span></div><div class="line">                        Close(sockfd);</div><div class="line">                        client[i].fd = <span class="number">-1</span>;</div><div class="line">                    &#125; <span class="keyword">else</span></div><div class="line">                        err_sys(<span class="string">"read error"</span>);</div><div class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (n == <span class="number">0</span>) &#123;</div><div class="line">                        <span class="comment">/* connection closed by client */</span></div><div class="line">                    Close(sockfd);</div><div class="line">                    client[i].fd = <span class="number">-1</span>;</div><div class="line">                &#125; <span class="keyword">else</span></div><div class="line">                   Writen(sockfd, buf, n);</div><div class="line">                <span class="keyword">if</span> (--nready &lt;= <span class="number">0</span>)</div><div class="line">                        <span class="keyword">break</span>;               <span class="comment">/* no more readable descriptors */</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 ]]></content>
       
@@ -70,9 +73,15 @@
     <entry>
       <title><![CDATA[The Elements of LevelDB]]></title>
       <url>/blog/2017/11/02/LevelDB/</url>
-      <content type="html"><![CDATA[<p>开学以来想找个优秀的C++开源项目学习一下，在实验室学长的建议下选择了Google的开源项目LevelDB。</p>
-<h4 id="Overall"><a href="#Overall" class="headerlink" title="Overall"></a>Overall</h4><p>Google发表在OSDI上的Bigtable是一个支持海量数据存储的分布式存储系统。</p>
-<h4 id="Modules"><a href="#Modules" class="headerlink" title="Modules"></a>Modules</h4><h5 id="Memory-Area"><a href="#Memory-Area" class="headerlink" title="Memory Area"></a>Memory Area</h5><h5 id="Compaction"><a href="#Compaction" class="headerlink" title="Compaction"></a>Compaction</h5><h5 id="Metatable"><a href="#Metatable" class="headerlink" title="Metatable"></a>Metatable</h5>]]></content>
+      <content type="html"><![CDATA[<p>TODO…</p>
+<p>Google发表在OSDI上的Bigtable是一个支持海量数据存储的分布式存储系统。正好开学以来想找个优秀的C++开源项目学习一下，于是选择了Google的开源项目LevelDB（参照Bigtable的原理）。</p>
+<h4 id="Overall"><a href="#Overall" class="headerlink" title="Overall"></a>Overall</h4><p>LevelDB是持久化KV单机数据库，具有很高的随机写，顺序读/写性能，但是随机读的性能很一般，也就是说，LevelDB很适合应用在查询较少，而写很多的场景。LevelDB应用了LSM (Log Structured Merge) 策略，lsm_tree对索引变更进行延迟及批量处理，并通过一种类似于归并排序的方式高效地将更新迁移到磁盘，降低索引插入开销。关于LevelDB的实现细节，后面会分各模块介绍。</p>
+<p><img src="http://oux7mu760.bkt.clouddn.com/leveldb_lsm.png" alt=""></p>
+<h4 id="Modules"><a href="#Modules" class="headerlink" title="Modules"></a>Modules</h4><h5 id="Memory-Area"><a href="#Memory-Area" class="headerlink" title="Memory Area"></a>Memory Area</h5><h5 id="Compaction"><a href="#Compaction" class="headerlink" title="Compaction"></a>Compaction</h5><p>对于LevelDb来说，写入记录操作很简单，删除记录仅仅写入一个删除标记就算完事，但是读取记录比较复杂，需要在内存以及各个层级文件中依照新鲜程度依次查找，代价很高。为了加快读取速度，LevelDb采取了compaction的方式来对已有的记录进行整理压缩，通过这种方式，来删除掉一些不再有效的KV数据，减小数据规模，减少文件数量等。</p>
+<p>LevelDb的compaction机制和过程与Bigtable所讲述的是基本一致的，Bigtable中讲到三种类型的compaction: minor ，major和full。所谓minor Compaction，就是把memtable中的数据导出到SSTable文件中；major compaction就是合并不同层级的SSTable文件，而full compaction就是将所有SSTable进行合并。</p>
+<p>先来看看minor Compaction的过程。Minor compaction 的目的是当内存中的memtable大小到了一定值时，将内容保存到磁盘文件中，如图所示。</p>
+<p><img src="http://oux7mu760.bkt.clouddn.com/2011121116374532.png" alt=""></p>
+<h5 id="Metatable"><a href="#Metatable" class="headerlink" title="Metatable"></a>Metatable</h5>]]></content>
       
         <categories>
             
@@ -95,22 +104,22 @@
   
     
     <entry>
-      <title><![CDATA[关于]]></title>
-      <url>/blog/about/index.html</url>
-      <content type="html"><![CDATA[<p>Hello, guys! Welcome to my personal blog site. I got my bachelor’s degree from Huazhong University of Science and Technology(HUST). I’m currently working on network traffic data based projects as  a graduate student at CSE(Computer Science and Engineering) department of SJTU.</p>
-<p>Education experience: </p>
-<ul>
-<li>Information Security, School of Computer Science and Technology, HUST.</li>
-<li>Computer Systems and Network, Department of Computer Science and Engineering, SJTU.</li>
-</ul>
-<p>:)</p>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[读书]]></title>
       <url>/blog/reading/index.html</url>
       <content type="html"></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[关于]]></title>
+      <url>/blog/about/index.html</url>
+      <content type="html"><![CDATA[<p>Hello! Welcome to my personal blog site. :)</p>
+<p>I got my bachelor’s degree from Huazhong University of Science and Technology(HUST). And I’m currently working on mobile computing and network traffic data based projects as  a graduate student at CSE(Computer Science and Engineering) department of SJTU.</p>
+<p>Education experience: </p>
+<ul>
+<li>Information Security, School of Computer Science and Technology, HUST.</li>
+<li>Computer Science &amp; Technology, Department of Computer Science and Engineering, SJTU.</li>
+</ul>
+]]></content>
     </entry>
     
   

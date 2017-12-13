@@ -10,9 +10,9 @@
     <title>The Elements of LevelDB | </title>
     <meta name="author" content="Jerry Fang">
     
-    <meta name="description" content="开学以来想找个优秀的C++开源项目学习一下，在实验室学长的建议下选择了Google的开源项目LevelDB。
-OverallGoogle发表在OSDI上的Bigtable是一个支持海量数据存储的分布式存储系统。
-ModulesMemory AreaCompactionMetatable">
+    <meta name="description" content="TODO…
+Google发表在OSDI上的Bigtable是一个支持海量数据存储的分布式存储系统。正好开学以来想找个优秀的C++开源项目学习一下，于是选择了Google的开源项目LevelDB（参照Bigtable的原理）。
+OverallLevelDB是持久化KV单机数据库，具有很高的随机写，顺序">
     
     
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -263,9 +263,15 @@ ModulesMemory AreaCompactionMetatable">
 
 
             <div class="entry green-link-context">
-                <p>开学以来想找个优秀的C++开源项目学习一下，在实验室学长的建议下选择了Google的开源项目LevelDB。</p>
-<h4 id="Overall"><a href="#Overall" class="headerlink" title="Overall"></a>Overall</h4><p>Google发表在OSDI上的Bigtable是一个支持海量数据存储的分布式存储系统。</p>
-<h4 id="Modules"><a href="#Modules" class="headerlink" title="Modules"></a>Modules</h4><h5 id="Memory-Area"><a href="#Memory-Area" class="headerlink" title="Memory Area"></a>Memory Area</h5><h5 id="Compaction"><a href="#Compaction" class="headerlink" title="Compaction"></a>Compaction</h5><h5 id="Metatable"><a href="#Metatable" class="headerlink" title="Metatable"></a>Metatable</h5>
+                <p>TODO…</p>
+<p>Google发表在OSDI上的Bigtable是一个支持海量数据存储的分布式存储系统。正好开学以来想找个优秀的C++开源项目学习一下，于是选择了Google的开源项目LevelDB（参照Bigtable的原理）。</p>
+<h4 id="Overall"><a href="#Overall" class="headerlink" title="Overall"></a>Overall</h4><p>LevelDB是持久化KV单机数据库，具有很高的随机写，顺序读/写性能，但是随机读的性能很一般，也就是说，LevelDB很适合应用在查询较少，而写很多的场景。LevelDB应用了LSM (Log Structured Merge) 策略，lsm_tree对索引变更进行延迟及批量处理，并通过一种类似于归并排序的方式高效地将更新迁移到磁盘，降低索引插入开销。关于LevelDB的实现细节，后面会分各模块介绍。</p>
+<p><img src="http://oux7mu760.bkt.clouddn.com/leveldb_lsm.png" alt=""></p>
+<h4 id="Modules"><a href="#Modules" class="headerlink" title="Modules"></a>Modules</h4><h5 id="Memory-Area"><a href="#Memory-Area" class="headerlink" title="Memory Area"></a>Memory Area</h5><h5 id="Compaction"><a href="#Compaction" class="headerlink" title="Compaction"></a>Compaction</h5><p>对于LevelDb来说，写入记录操作很简单，删除记录仅仅写入一个删除标记就算完事，但是读取记录比较复杂，需要在内存以及各个层级文件中依照新鲜程度依次查找，代价很高。为了加快读取速度，LevelDb采取了compaction的方式来对已有的记录进行整理压缩，通过这种方式，来删除掉一些不再有效的KV数据，减小数据规模，减少文件数量等。</p>
+<p>LevelDb的compaction机制和过程与Bigtable所讲述的是基本一致的，Bigtable中讲到三种类型的compaction: minor ，major和full。所谓minor Compaction，就是把memtable中的数据导出到SSTable文件中；major compaction就是合并不同层级的SSTable文件，而full compaction就是将所有SSTable进行合并。</p>
+<p>先来看看minor Compaction的过程。Minor compaction 的目的是当内存中的memtable大小到了一定值时，将内容保存到磁盘文件中，如图所示。</p>
+<p><img src="http://oux7mu760.bkt.clouddn.com/2011121116374532.png" alt=""></p>
+<h5 id="Metatable"><a href="#Metatable" class="headerlink" title="Metatable"></a>Metatable</h5>
                 
 <p class="green-link-context">
     <a href="/blog/2017/11/25/谈谈IO/" rel="next" title="I/O Multiplexing">
