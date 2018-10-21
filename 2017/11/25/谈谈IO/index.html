@@ -8,7 +8,7 @@
     
 
     <title>I/O Multiplexing | </title>
-    <meta name="author" content="Jerry Fang">
+    <meta name="author" content="L. Fang">
     
     <meta name="description" content="TODO Epoll; Reactor model.
 Preface有些进程需要一种预先告知内核的能力，使得内核一旦发现进程指定的一个或多个I/O条件就绪(也就是说输入已准备好被读取，或者描述符已能承受更多的输出)就通知进程，这个能力成为I/O复用(I/O Multiplexing)。
@@ -18,20 +18,20 @@ MainI/">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
     <meta property="og:title" content="I/O Multiplexing"/>
-    <meta property="og:site_name" content="You&#39;re all my reasons"/>
+    <meta property="og:site_name" content="Leon Fang"/>
 
     
     <meta property="og:image" content=""/>
     
 
-    <link rel="icon" type="image/png" href="/blog/favicon.png">
-    <link rel="alternate" href="/blog/atom.xml" title="You&#39;re all my reasons" type="application/atom+xml">
-    <link rel="stylesheet" href="/blog/css/lib/materialize.min.css">
-    <link rel="stylesheet" href="/blog/css/lib/font-awesome.min.css">
-    <link rel="stylesheet" href="/blog/css/style.css" media="screen" type="text/css">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="alternate" href="/atom.xml" title="Leon Fang" type="application/atom+xml">
+    <link rel="stylesheet" href="/css/lib/materialize.min.css">
+    <link rel="stylesheet" href="/css/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
 
     
-        <link rel="stylesheet" href="/blog/css/lib/prettify-tomorrow-night-eighties.css" type="text/css">
+        <link rel="stylesheet" href="/css/lib/prettify-tomorrow-night-eighties.css" type="text/css">
     
     <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
@@ -46,11 +46,11 @@ MainI/">
             <i class="fa fa-navicon"></i>
         </a>
         <div class="">
-            <a href="/" class="brand-logo hide-on-med-and-down">You&#39;re all my reasons</a>
+            <a href="/" class="brand-logo hide-on-med-and-down">Leon Fang</a>
             <ul class="right hide-on-med-and-down">
                 
                     <li>
-                        <a class="menu-home " href="/blog" >
+                        <a class="menu-home " href="/" >
                             <i class="fa fa-home "></i>
                             
                             Home
@@ -58,7 +58,7 @@ MainI/">
                     </li>
                 
                     <li>
-                        <a class="menu-archive " href="/blog/archives" >
+                        <a class="menu-archive " href="/archives" >
                             <i class="fa fa-archive "></i>
                             
                             Archives
@@ -74,7 +74,7 @@ MainI/">
                     </li>
                 
                     <li>
-                        <a class="menu-reading " href="/blog/reading" >
+                        <a class="menu-reading " href="/reading" >
                             <i class="fa fa-book "></i>
                             
                             Reading
@@ -82,7 +82,7 @@ MainI/">
                     </li>
                 
                     <li>
-                        <a class="menu-about " href="/blog/about" >
+                        <a class="menu-about " href="/about" >
                             <i class="fa fa-user "></i>
                             
                             About
@@ -118,7 +118,7 @@ MainI/">
 
         
             <li class="no-padding">
-                <a class="waves-effect menu-home " href="/blog" >
+                <a class="waves-effect menu-home " href="/" >
                     <i class="fa fa-home "></i>
                     
                     Home
@@ -126,7 +126,7 @@ MainI/">
             </li>
         
             <li class="no-padding">
-                <a class="waves-effect menu-archive " href="/blog/archives" >
+                <a class="waves-effect menu-archive " href="/archives" >
                     <i class="fa fa-archive "></i>
                     
                     Archives
@@ -142,7 +142,7 @@ MainI/">
             </li>
         
             <li class="no-padding">
-                <a class="waves-effect menu-reading " href="/blog/reading" >
+                <a class="waves-effect menu-reading " href="/reading" >
                     <i class="fa fa-book "></i>
                     
                     Reading
@@ -150,7 +150,7 @@ MainI/">
             </li>
         
             <li class="no-padding">
-                <a class="waves-effect menu-about " href="/blog/about" >
+                <a class="waves-effect menu-about " href="/about" >
                     <i class="fa fa-user "></i>
                     
                     About
@@ -173,16 +173,24 @@ MainI/">
             
 
             <li class="collapse-level-0" collapse-level="0">
-                <a class="no-padding" href="/blog/categories/日常/">
-                    日常 <span class="right">1</span></a>
+                <a class="no-padding" href="/categories/日常/">
+                    日常 <span class="right">2</span></a>
                 </a>
             </li>
 
         
 
             <li class="collapse-level-0" collapse-level="0">
-                <a class="no-padding" href="/blog/categories/技术/">
+                <a class="no-padding" href="/categories/技术/">
                     技术 <span class="right">2</span></a>
+                </a>
+            </li>
+
+        
+
+            <li class="collapse-level-0" collapse-level="0">
+                <a class="no-padding" href="/categories/Algorithm/">
+                    Algorithm <span class="right">1</span></a>
                 </a>
             </li>
 
@@ -218,7 +226,7 @@ MainI/">
             
     
     
-    <a class="breadcrumb" href="/blog/categories/技术/">技术</a>
+    <a class="breadcrumb" href="/categories/技术/">技术</a>
 
 
         
@@ -240,7 +248,7 @@ MainI/">
 
 
             </div>
-            <time class="green-link-context" datetime="2017-11-25T12:20:20.000Z"><a href="/blog/2017/11/25/谈谈IO/">2017-11-25</a></time>
+            <time class="green-link-context" datetime="2017-11-25T12:20:20.000Z"><a href="/2017/11/25/谈谈IO/">2017-11-25</a></time>
 
             <span id="busuanzi_container_page_pv" class="read-times-container">
     <i class="fa fa-eye"></i>
@@ -250,9 +258,9 @@ MainI/">
             
     <div class="tags-row">
         
-            <a href="/blog/tags/Linux/" class="chip green lighten-1">Linux</a>
+            <a href="/tags/Linux/" class="chip green lighten-1">Linux</a>
         
-            <a href="/blog/tags/UNP/" class="chip green lighten-1">UNP</a>
+            <a href="/tags/UNP/" class="chip green lighten-1">UNP</a>
         
     </div>
 
@@ -276,7 +284,7 @@ MainI/">
 <p>同时需要强调的是，前四种从本质上来说都是同步IO。</p>
 <h3 id="阻塞IO与非阻塞IO的区别"><a href="#阻塞IO与非阻塞IO的区别" class="headerlink" title="阻塞IO与非阻塞IO的区别"></a>阻塞IO与非阻塞IO的区别</h3><p>阻塞IO，以recv进程为例，进程在内核准备数据的过程中是阻塞的，即被挂起等待数据。当数据准备好，内核把数据拷贝到用户空间，返回给用户处理。</p>
 <p>非阻塞IO，进程把一个套接字设置成非阻塞是在通知内核：当所请求的I/O操作非得把本进程投入睡眠才能完成，不能把本进程投入睡眠，而是返回一个错误。</p>
-<p>当一个应用程序使用了非阻塞模式的套接字，它需要使用一个循环来不听的测试是否一个文件描述符有数据可读（ polling） 。应用程序不停的 polling内核来检查是否 I/O操作已经就绪。这将是一个极浪费CPU资源的操作。这种模式在使用中不是很普遍。</p>
+<p>当一个应用程序使用了非阻塞模式的套接字，它需要使用一个循环来不停地测试是否一个文件描述符有数据可读（ polling） 。应用程序不停的 polling内核来检查是否 I/O操作已经就绪。这将是一个极浪费CPU资源的操作。这种模式在使用中不是很普遍。</p>
 <h3 id="I-O-Multiplexing"><a href="#I-O-Multiplexing" class="headerlink" title="I/O Multiplexing"></a>I/O Multiplexing</h3><p>有了I/O复用，我们就可以调用select或poll，阻塞在这两个系统调用中的某一个之上，而不是阻塞真正的I/O系统之上，如图所示。</p>
 <p><img src="http://oux7mu760.bkt.clouddn.com/IO_Multiplexing.jpg" alt=""></p>
 <p>进程阻塞于select调用，等待数据报套接字变为可读，当select返回套接字可读这一条件时，调用recvfrom把所读的数据复制到应用程序缓冲区内。另外使用select的优势在于我们可以等待多个描述符就绪。</p>
@@ -285,7 +293,7 @@ MainI/">
 
                 
 <p class="green-link-context">
-    <a href="/blog/2017/12/14/致头baby/" rel="next" title="致我的头baby">
+    <a href="/2017/12/14/致头baby/" rel="next" title="致我的头baby">
     Prev: 致我的头baby
   </a>
 </p>
@@ -293,7 +301,7 @@ MainI/">
 
 
 <p class="green-link-context">
-    <a href="/blog/2017/11/02/LevelDB/" rel="next" title="The Elements of LevelDB">
+    <a href="/2017/11/02/LevelDB/" rel="next" title="The Elements of LevelDB">
     Next: The Elements of LevelDB
   </a>
 </p>
@@ -368,7 +376,7 @@ MainI/">
 
     <div class="footer-copyright green-link-context">
         <div class="container">
-            © 2017 heyfl.com, All rights reserved.
+            © 2018 Leon Fang, All rights reserved.
             <p class="right" style="margin-top: 0;">Blog powered by <a href="https://hexo.io">Hexo</a>
             </p>
         </div>
@@ -386,8 +394,8 @@ MainI/">
 </div>
 
 
-<script src="/blog/js/jquery.min.js"></script>
-<script src="/blog/js/materialize.min.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/materialize.min.js"></script>
 
 <script>
     (function($) {
@@ -484,7 +492,7 @@ MainI/">
             if (searchXml.length == 0) {
              	searchXml = "search.xml";
             }
-            var searchPath = "/blog/" + searchXml;
+            var searchPath = "/" + searchXml;
             initSearch(searchPath, 'search-input', 'search-result');
         });
 
@@ -583,7 +591,7 @@ MainI/">
 </script>
 
 
-<script src="/blog/js/prettify.js"></script>
+<script src="/js/prettify.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         $("pre").addClass("prettyprint");

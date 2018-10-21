@@ -3,8 +3,69 @@
   
     
     <entry>
+      <title><![CDATA[实现O(1)时间复杂度的LRU Cache]]></title>
+      <url>/2018/10/09/LRU%20Cache/</url>
+      <content type="html"><![CDATA[<h2 id="Problem-Description"><a href="#Problem-Description" class="headerlink" title="Problem Description"></a>Problem Description</h2><p>Design and implement a data structure for <a href="https://en.wikipedia.org/wiki/Cache_replacement_policies#LRU" target="_blank" rel="external">Least Recently Used (LRU) cache</a>. It should support the following operations: <code>get</code> and <code>put</code>.</p>
+<p><code>get(key)</code> - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.<br><code>put(key, value)</code> - Set or insert the value if the key is not already present. When the cache reached its capacity, it should invalidate the least recently used item before inserting a new item.</p>
+<p><strong>Follow up:</strong><br>Could you do both operations in <strong>O(1)</strong> time complexity?</p>
+<p><strong>Example:</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">LRUCache cache = <span class="keyword">new</span> LRUCache( <span class="number">2</span> <span class="comment">/* capacity */</span> );</div><div class="line"></div><div class="line">cache.put(<span class="number">1</span>, <span class="number">1</span>);</div><div class="line">cache.put(<span class="number">2</span>, <span class="number">2</span>);</div><div class="line">cache.get(<span class="number">1</span>);       <span class="comment">// returns 1</span></div><div class="line">cache.put(<span class="number">3</span>, <span class="number">3</span>);    <span class="comment">// evicts key 2</span></div><div class="line">cache.get(<span class="number">2</span>);       <span class="comment">// returns -1 (not found)</span></div><div class="line">cache.put(<span class="number">4</span>, <span class="number">4</span>);    <span class="comment">// evicts key 1</span></div><div class="line">cache.get(<span class="number">1</span>);       <span class="comment">// returns -1 (not found)</span></div><div class="line">cache.get(<span class="number">3</span>);       <span class="comment">// returns 3</span></div><div class="line">cache.get(<span class="number">4</span>);       <span class="comment">// returns 4</span></div></pre></td></tr></table></figure>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>记得以前在学习计算机组成原理课程时曾用Logisim仿真软件实现过LRU Cache的模拟电路。当时应该是使用了封装好的计数器module用于指示元素“最近使用属性”程度. 当发生cache已满时插入记录的情况时，剔除最近最少使用的元素。</p>
+<p>回到本题。实现LRU Cache的put操作需要考虑Cache的容量，如果已有元素超过Cache的capacity，那么需要将<code>Least Recent Used</code>元素剔除，更新cache中元素freshness的计数器；get操作即通过key来查找cache中的元素，如果不存在即返回-1，如果存在即返回value，并更新每个元素的freshness计数器。考虑到需要实现O(1)时间复杂度，因此第一想法是使用Hash Table用于查找和存储value，可以使用STL中的<code>unordered_map</code>. 但前述使用freshness计数器的方法行不通，因为更新操作需要遍历hash table。</p>
+<p>考虑到LRU更新计数器的特性是每次除了被访问元素，其他元素的计数器变化是一样的，结合O(1)的时间复杂度要求，想到可以：首先，使用<code>unordered_map</code>保存cache的元素，i.e. <code>&lt;key, value&gt;</code>；使用一个<code>list</code>保存key，元素顺序表示其freshness，插入元素时在list头部插入，最fresh的元素处于list的头部；为了达到常数级别时间复杂度的要求，插入元素时将key的位置保存到cache的元素中，即value中保存着指向key的iterator ( &lt;=&gt; cache中的元素表示为<code>&lt;key, &lt;value, key.iterator&gt; &gt;</code>；访问元素时，先通过hash map查找到<code>&lt;value, key.iterator&gt;</code>，然后通过key的iterator，先删除key，再将key插入到list头部，这样就避免了遍历计数更新freshness.</p>
+<p>代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;list&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unordered_map&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">LRUCache</span> &#123;</span></div><div class="line"><span class="keyword">public</span>:</div><div class="line">    explicit LRUCache(int capacity): _capacity(capacity) &#123;&#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span> key)</span> </span>&#123;</div><div class="line">        <span class="keyword">auto</span> it = cache.find(key);</div><div class="line">        <span class="keyword">if</span> (it == cache.end()) &#123;</div><div class="line">            <span class="built_in">cout</span> &lt;&lt; <span class="string">"Get Operation: key is "</span> &lt;&lt; key &lt;&lt; <span class="string">" and value is INVALID"</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</div><div class="line">        &#125;</div><div class="line">        access_count(it);</div><div class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"Get Operation: key is "</span> &lt;&lt; key &lt;&lt; <span class="string">" and value is "</span> &lt;&lt; it-&gt;second.first &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">        <span class="keyword">return</span> it-&gt;second.first;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">put</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> value)</span> </span>&#123;</div><div class="line">        <span class="keyword">auto</span> it = cache.find(key);</div><div class="line">        <span class="keyword">if</span> (it != cache.end()) &#123;</div><div class="line">            access_count(it);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="keyword">if</span> (cache.size() == _capacity) &#123;</div><div class="line">                cache.erase(keys.back());</div><div class="line">                keys.pop_back();</div><div class="line">            &#125;</div><div class="line">            keys.push_front(key);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        cache[key] = make_pair(value, keys.begin());</div><div class="line">    &#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span>:</div><div class="line"></div><div class="line">    <span class="keyword">typedef</span> <span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt; LI;</div><div class="line">    <span class="keyword">typedef</span> pair&lt;<span class="keyword">int</span>, LI::iterator&gt; PLI;</div><div class="line">    <span class="keyword">typedef</span> <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>, PLI&gt; MPLI;</div><div class="line"></div><div class="line">    MPLI cache;</div><div class="line">    LI keys;</div><div class="line"></div><div class="line">    <span class="keyword">int</span> _capacity;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">access_count</span><span class="params">(MPLI::iterator it)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> key = it-&gt;first;</div><div class="line">        keys.erase(it-&gt;second.second);</div><div class="line">        keys.push_front(key);</div><div class="line">        it-&gt;second.second = keys.begin();</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+]]></content>
+      
+        <categories>
+            
+            <category> Algorithm </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> OJ </tag>
+            
+            <tag> Algorithm </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Way Back Home]]></title>
+      <url>/2018/08/06/2018%E6%98%A5%E5%AD%A3%E5%AD%A6%E6%9C%9F%E6%80%BB%E7%BB%93/</url>
+      <content type="html"><![CDATA[<h2 id="Preface"><a href="#Preface" class="headerlink" title="Preface"></a>Preface</h2><p><em>普通人的家庭就像漂浮在海上的小船, 随时来的风雨都可以让它摇摇晃晃, 而对于我来讲, 更多感受的是小船里的温馨.</em></p>
+<h2 id="Main"><a href="#Main" class="headerlink" title="Main"></a>Main</h2><p>《Way Back Home》是一首偶然听到的韩国歌手SHAUN的歌曲，算不上热门。</p>
+<p>其实很少听韩国的歌，一来是因为歌词听不懂，二来还是歌词听不懂。喜欢一首歌，歌词是不可或缺的一部分。</p>
+<p>好在音乐本身也是一种语言。</p>
+<p>整首歌曲旋律简单，编曲轻松明快。投完论文一周后，听着它，回了家。</p>
+<p><br></p>
+<p>回到家，推开门，好像一个转场回到从前，书包一丢，大喊一句：我回来了，好累啊!</p>
+<p>然后就葛优瘫着等吃的，电视上放着《快乐星球》或是《憨八龟的故事》</p>
+<p>最没有忧虑的时光。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 日常 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 日常 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[致我的头baby]]></title>
-      <url>/blog/2017/12/14/%E8%87%B4%E5%A4%B4baby/</url>
+      <url>/2017/12/14/%E8%87%B4%E5%A4%B4baby/</url>
       <content type="html"><![CDATA[<p>亲爱的头Baby，生日快乐！以及，我们的三周年快乐！ (づ￣ 3￣)づ</p>
 <p>这是你在我们俩在一起以后的第四个生日，前三个生日我都陪着你过的，然而现在的你应该在巴黎吧QAQ </p>
 <p>想要感谢三年前的自己，因为我没有怂哈哈哈哈，做了一件现在看来无比无比正确的事情。</p>
@@ -38,7 +99,7 @@
     
     <entry>
       <title><![CDATA[I/O Multiplexing]]></title>
-      <url>/blog/2017/11/25/%E8%B0%88%E8%B0%88IO/</url>
+      <url>/2017/11/25/%E8%B0%88%E8%B0%88IO/</url>
       <content type="html"><![CDATA[<p><em>TODO</em> Epoll; Reactor model.</p>
 <h2 id="Preface"><a href="#Preface" class="headerlink" title="Preface"></a>Preface</h2><p>有些进程需要一种预先告知内核的能力，使得内核一旦发现进程指定的一个或多个I/O条件就绪(也就是说输入已准备好被读取，或者描述符已能承受更多的输出)就通知进程，这个能力成为I/O复用(I/O Multiplexing)。</p>
 <h2 id="Main"><a href="#Main" class="headerlink" title="Main"></a>Main</h2><h4 id="I-O类型"><a href="#I-O类型" class="headerlink" title="I/O类型"></a>I/O类型</h4><p>Linux下的IO总体分为磁盘IO与网络IO。磁盘IO的对象是磁盘上的文件，网络IO的对象是Socket套接字及其缓冲区。Linux下的IO类型分为5类：</p>
@@ -52,7 +113,7 @@
 <p>同时需要强调的是，前四种从本质上来说都是同步IO。</p>
 <h3 id="阻塞IO与非阻塞IO的区别"><a href="#阻塞IO与非阻塞IO的区别" class="headerlink" title="阻塞IO与非阻塞IO的区别"></a>阻塞IO与非阻塞IO的区别</h3><p>阻塞IO，以recv进程为例，进程在内核准备数据的过程中是阻塞的，即被挂起等待数据。当数据准备好，内核把数据拷贝到用户空间，返回给用户处理。</p>
 <p>非阻塞IO，进程把一个套接字设置成非阻塞是在通知内核：当所请求的I/O操作非得把本进程投入睡眠才能完成，不能把本进程投入睡眠，而是返回一个错误。</p>
-<p>当一个应用程序使用了非阻塞模式的套接字，它需要使用一个循环来不听的测试是否一个文件描述符有数据可读（ polling） 。应用程序不停的 polling内核来检查是否 I/O操作已经就绪。这将是一个极浪费CPU资源的操作。这种模式在使用中不是很普遍。</p>
+<p>当一个应用程序使用了非阻塞模式的套接字，它需要使用一个循环来不停地测试是否一个文件描述符有数据可读（ polling） 。应用程序不停的 polling内核来检查是否 I/O操作已经就绪。这将是一个极浪费CPU资源的操作。这种模式在使用中不是很普遍。</p>
 <h3 id="I-O-Multiplexing"><a href="#I-O-Multiplexing" class="headerlink" title="I/O Multiplexing"></a>I/O Multiplexing</h3><p>有了I/O复用，我们就可以调用select或poll，阻塞在这两个系统调用中的某一个之上，而不是阻塞真正的I/O系统之上，如图所示。</p>
 <p><img src="http://oux7mu760.bkt.clouddn.com/IO_Multiplexing.jpg" alt=""></p>
 <p>进程阻塞于select调用，等待数据报套接字变为可读，当select返回套接字可读这一条件时，调用recvfrom把所读的数据复制到应用程序缓冲区内。另外使用select的优势在于我们可以等待多个描述符就绪。</p>
@@ -79,7 +140,7 @@
     
     <entry>
       <title><![CDATA[The Elements of LevelDB]]></title>
-      <url>/blog/2017/11/02/LevelDB/</url>
+      <url>/2017/11/02/LevelDB/</url>
       <content type="html"><![CDATA[<p>TODO…</p>
 <p>Google发表在OSDI上的Bigtable是一个支持海量数据存储的分布式存储系统。正好开学以来想找个优秀的C++开源项目学习一下，于是选择了Google的开源项目LevelDB（参照Bigtable的原理）。</p>
 <h4 id="Overall"><a href="#Overall" class="headerlink" title="Overall"></a>Overall</h4><p>LevelDB是持久化KV单机数据库，具有很高的随机写，顺序读/写性能，但是随机读的性能很一般，也就是说，LevelDB很适合应用在查询较少，而写很多的场景。LevelDB应用了LSM (Log Structured Merge) 策略，lsm_tree对索引变更进行延迟及批量处理，并通过一种类似于归并排序的方式高效地将更新迁移到磁盘，降低索引插入开销。关于LevelDB的实现细节，后面会分各模块介绍。</p>
@@ -112,8 +173,8 @@
     
     <entry>
       <title><![CDATA[关于]]></title>
-      <url>/blog/about/index.html</url>
-      <content type="html"><![CDATA[<p>Hello! Welcome to my personal blog site. :)</p>
+      <url>/about/index.html</url>
+      <content type="html"><![CDATA[<p>Hi, there! Welcome to my personal blog site. :)</p>
 <p>I got my bachelor’s degree from Huazhong University of Science and Technology(HUST). And I’m currently working on mobile computing and network traffic data based projects as  a graduate student at CSE(Computer Science and Engineering) department of SJTU.</p>
 <p>Education experience: </p>
 <ul>
@@ -125,7 +186,7 @@
     
     <entry>
       <title><![CDATA[读书]]></title>
-      <url>/blog/reading/index.html</url>
+      <url>/reading/index.html</url>
       <content type="html"></content>
     </entry>
     
