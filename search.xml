@@ -172,6 +172,12 @@
   
     
     <entry>
+      <title><![CDATA[读书]]></title>
+      <url>/reading/index.html</url>
+      <content type="html"></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[关于]]></title>
       <url>/about/index.html</url>
       <content type="html"><![CDATA[<p>Hi, there! Welcome to my personal blog site. :)</p>
@@ -182,12 +188,6 @@
 <li>Computer Science &amp; Technology, Department of Computer Science and Engineering, SJTU.</li>
 </ul>
 ]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[读书]]></title>
-      <url>/reading/index.html</url>
-      <content type="html"></content>
     </entry>
     
   
